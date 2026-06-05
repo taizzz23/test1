@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Star, CheckCircle, ShoppingCart, CreditCard } from 'lucide-react';
 
-export default function ProductDetailModal({ product, onClose, onAddToCart }) {
+export default function ProductDetailModal({ product, onClose, onAddToCart, onBuyNow }) {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedStorage, setSelectedStorage] = useState(null);
   const [activeTab, setActiveTab] = useState('specs'); // 'specs' or 'highlights'
@@ -34,7 +34,20 @@ export default function ProductDetailModal({ product, onClose, onAddToCart }) {
       price: finalPrice,
       color: selectedColor.name,
       storage: selectedStorage.size,
-      colorHex: selectedColor.hex
+      colorHex: selectedColor.hex,
+      image: product.image
+    });
+  };
+
+  const handleBuyNowClick = () => {
+    onBuyNow({
+      id: product.id,
+      name: product.name,
+      price: finalPrice,
+      color: selectedColor.name,
+      storage: selectedStorage.size,
+      colorHex: selectedColor.hex,
+      image: product.image
     });
   };
 
@@ -56,40 +69,32 @@ export default function ProductDetailModal({ product, onClose, onAddToCart }) {
           {/* Visual Side */}
           <div className="modal-visual-side">
             <div className="modal-visual-preview">
+              {/* Backglow ring matching selected color */}
               <div 
-                className="phone-mockup animate-float"
-                style={{ 
-                  width: '180px', 
-                  height: '320px', 
-                  backgroundColor: '#0c0d12', 
-                  borderColor: selectedColor.hex,
-                  boxShadow: `0 15px 35px rgba(0,0,0,0.6), 0 0 25px ${selectedColor.hex}40`
+                style={{
+                  position: 'absolute',
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '50%',
+                  background: `radial-gradient(circle, ${selectedColor.hex}50 0%, transparent 70%)`,
+                  filter: 'blur(15px)',
+                  opacity: 0.8,
+                  zIndex: 1
                 }}
-              >
-                <div className="phone-screen" style={{ border: `1px solid ${selectedColor.hex}30` }}>
-                  <div className="phone-camera-notch"></div>
-                  <div className="phone-screen-logo" style={{ color: selectedColor.hex, fontSize: '12px' }}>
-                    {product.brand}
-                  </div>
-                  <div className="phone-screen-spec" style={{ fontSize: '10px' }}>
-                    {selectedStorage.size}
-                  </div>
-                  <div 
-                    style={{
-                      position: 'absolute',
-                      bottom: '40px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '60px',
-                      height: '60px',
-                      borderRadius: '50%',
-                      background: `radial-gradient(circle, ${selectedColor.hex}50 0%, transparent 70%)`,
-                      filter: 'blur(5px)',
-                      opacity: 0.8
-                    }}
-                  />
-                </div>
-              </div>
+              />
+              
+              {/* Real device image */}
+              <img 
+                src={product.image} 
+                alt={product.name} 
+                className="product-image animate-float"
+                style={{
+                  height: '280px',
+                  objectFit: 'contain',
+                  zIndex: 2,
+                  filter: 'drop-shadow(0 20px 25px rgba(0,0,0,0.5))'
+                }}
+              />
             </div>
 
             {/* Color selection */}
@@ -156,6 +161,20 @@ export default function ProductDetailModal({ product, onClose, onAddToCart }) {
                   </button>
                 ))}
               </div>
+            </div>
+            <div 
+              style={{
+                background: 'rgba(239, 68, 68, 0.08)',
+                border: '1px solid rgba(239, 68, 68, 0.15)',
+                borderRadius: '8px',
+                padding: '12px 16px',
+                fontSize: '13px',
+                color: '#fca5a5',
+                marginBottom: '20px',
+                textAlign: 'left'
+              }}
+            >
+              <strong>Tình trạng thanh lý:</strong> {product.condition}
             </div>
 
             <p className="modal-description">{product.description}</p>
@@ -237,10 +256,7 @@ export default function ProductDetailModal({ product, onClose, onAddToCart }) {
               </button>
               <button 
                 className="btn btn-primary"
-                onClick={() => {
-                  alert(`Cảm ơn bạn đã mua ${product.name} (${selectedStorage.size} - ${selectedColor.name}) giá ${formatPrice(finalPrice)}. Đây là bản thử nghiệm!`);
-                  onClose();
-                }}
+                onClick={handleBuyNowClick}
               >
                 <CreditCard size={18} />
                 Mua Ngay

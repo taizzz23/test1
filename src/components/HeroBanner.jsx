@@ -29,30 +29,30 @@ export default function HeroBanner() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              background: 'rgba(6, 182, 212, 0.1)',
-              border: '1px solid rgba(6, 182, 212, 0.2)',
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.2)',
               borderRadius: '20px',
               padding: '6px 16px',
               fontSize: '13px',
               fontWeight: '600',
-              color: 'var(--accent-cyan)',
+              color: '#ef4444',
               marginBottom: '20px'
             }}
           >
             <Flame size={14} fill="currentColor" />
-            Khuyến mãi lớn nhất mùa hè: Giảm giá tới 22%
+            Thanh lý & Xả kho thu hồi vốn: Giảm giá tới 52%
           </div>
           <h1>
-            Kỷ Nguyên <br />
-            <span className="gradient-text">Smartphone AI</span> <br />
-            Tối Tân Nhất
+            Thanh Lý <br />
+            <span className="gradient-text">Flagship Giá Gốc</span> <br />
+            Chính Hãng Likenew
           </h1>
           <p>
-            Chào mừng bạn đến với GigaTech. Trải nghiệm các sản phẩm flagship cao cấp hàng đầu thế giới từ Apple, Samsung, Xiaomi với các tính năng vượt trội, hỗ trợ trả góp 0% và bảo hành 1 đổi 1 trong 30 ngày.
+            Chào mừng bạn đến với GigaTech Outlet. Hệ thống thanh lý điện thoại cao cấp trưng bày showroom, máy trôi bảo hành và Like New 99% lớn nhất Việt Nam. Tất cả thiết bị đã qua kiểm định chất lượng nghiêm ngặt 30 bước, cam kết zin áp suất nguyên bản.
           </p>
           <div className="hero-buttons">
             <a href="#products" className="btn btn-primary" onClick={handleExploreClick}>
-              Mua Ngay
+              Xem Máy Thanh Lý
             </a>
             <a href="#about" className="btn btn-secondary" onClick={(e) => {
               e.preventDefault();
@@ -65,15 +65,15 @@ export default function HeroBanner() {
           <div className="feature-tags">
             <div className="feature-tag">
               <Truck size={18} />
-              <span>Giao Hàng Miễn Phí</span>
+              <span>Giao Toàn Quốc</span>
             </div>
             <div className="feature-tag">
               <ShieldCheck size={18} />
-              <span>Bảo Hành 12 Tháng</span>
+              <span>Bảo Hành 6 Tháng</span>
             </div>
             <div className="feature-tag">
               <Headphones size={18} />
-              <span>Hỗ Trợ 24/7</span>
+              <span>Bao Test Áp Suất</span>
             </div>
           </div>
         </div>

@@ -3,6 +3,8 @@ import Navbar from './components/Navbar';
 import HeroBanner from './components/HeroBanner';
 import ProductCatalog from './components/ProductCatalog';
 import ProductDetailModal from './components/ProductDetailModal';
+import CartDrawer from './components/CartDrawer';
+import CheckoutModal from './components/CheckoutModal';
 import Footer from './components/Footer';
 import { products } from './data/products';
 import { Check } from 'lucide-react';
@@ -11,6 +13,8 @@ export default function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeSection, setActiveSection] = useState('home');
   const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
   // Monitor scroll to update active navbar section highlight
@@ -43,18 +47,83 @@ export default function App() {
     }, 3000);
   };
 
-  const handleAddToCart = (item) => {
-    setCart((prevCart) => [...prevCart, item]);
-    triggerToast(`Đã thêm ${item.name} (${item.storage}) vào giỏ hàng!`);
+  const handleAddToCart = (newItem) => {
+    setCart((prevCart) => {
+      // Check if item already exists in cart with same id, storage, and color
+      const existingItemIndex = prevCart.findIndex(
+        (item) => 
+          item.id === newItem.id && 
+          item.storage === newItem.storage && 
+          item.color === newItem.color
+      );
+
+      if (existingItemIndex > -1) {
+        // Increment quantity of existing item
+        const updatedCart = [...prevCart];
+        updatedCart[existingItemIndex].quantity += 1;
+        return updatedCart;
+      } else {
+        // Add new item with quantity of 1
+        return [...prevCart, { ...newItem, quantity: 1 }];
+      }
+    });
+
+    triggerToast(`Đã thêm ${newItem.name} vào giỏ hàng!`);
   };
 
-  const handleCartClick = () => {
-    if (cart.length === 0) {
-      triggerToast("Giỏ hàng của bạn đang trống!");
-      return;
-    }
-    const cartSummary = cart.map(item => `- ${item.name} (${item.storage} - ${item.color})`).join('\n');
-    alert(`Giỏ hàng của bạn có ${cart.length} sản phẩm:\n\n${cartSummary}\n\nĐây là trang web demo.`);
+  const handleQuantityChange = (index, change) => {
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart];
+      const targetItem = updatedCart[index];
+      const newQty = targetItem.quantity + change;
+
+      if (newQty < 1) {
+        // Remove item if quantity falls below 1
+        return prevCart.filter((_, i) => i !== index);
+      } else {
+        // Adjust quantity
+        updatedCart[index] = { ...targetItem, quantity: newQty };
+        return updatedCart;
+      }
+    });
+  };
+
+  const handleRemoveItem = (index) => {
+    setCart((prevCart) => prevCart.filter((_, i) => i !== index));
+    triggerToast("Đã xóa sản phẩm khỏi giỏ hàng!");
+  };
+
+  const handleCheckoutTrigger = () => {
+    setIsCartOpen(false);
+    setIsCheckoutOpen(true);
+  };
+
+  const handleOrderSuccess = () => {
+    setCart([]);
+    setIsCheckoutOpen(false);
+    triggerToast("Đặt hàng thành công! Đang xử lý đơn hàng...");
+  };
+
+  const handleBuyNow = (newItem) => {
+    setCart((prevCart) => {
+      const existingItemIndex = prevCart.findIndex(
+        (item) => 
+          item.id === newItem.id && 
+          item.storage === newItem.storage && 
+          item.color === newItem.color
+      );
+
+      if (existingItemIndex > -1) {
+        const updatedCart = [...prevCart];
+        updatedCart[existingItemIndex].quantity += 1;
+        return updatedCart;
+      } else {
+        return [...prevCart, { ...newItem, quantity: 1 }];
+      }
+    });
+
+    setSelectedProduct(null);
+    setIsCheckoutOpen(true);
   };
 
   const handleFooterLinkClick = (e, sectionId) => {
@@ -75,14 +144,17 @@ export default function App() {
     }
   };
 
+  // Calculate total number of items in the cart
+  const cartTotalItems = cart.reduce((total, item) => total + item.quantity, 0);
+
   return (
     <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Header Navigation */}
       <Navbar
         activeSection={activeSection}
         setActiveSection={setActiveSection}
-        cartCount={cart.length}
-        onCartClick={handleCartClick}
+        cartCount={cartTotalItems}
+        onCartClick={() => setIsCartOpen(true)}
       />
 
       {/* Main Pages Content */}
@@ -106,6 +178,26 @@ export default function App() {
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
           onAddToCart={handleAddToCart}
+          onBuyNow={handleBuyNow}
+        />
+      )}
+
+      {/* Sliding Cart Drawer */}
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cart={cart}
+        onQuantityChange={handleQuantityChange}
+        onRemoveItem={handleRemoveItem}
+        onCheckout={handleCheckoutTrigger}
+      />
+
+      {/* Checkout Screen Modal */}
+      {isCheckoutOpen && (
+        <CheckoutModal
+          cart={cart}
+          onClose={() => setIsCheckoutOpen(false)}
+          onOrderSuccess={handleOrderSuccess}
         />
       )}
 

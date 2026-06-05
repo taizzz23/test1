@@ -29,36 +29,32 @@ export default function ProductCard({ product, onViewDetails }) {
       )}
 
       <div className="product-image-area">
-        {/* CSS Mockup representing the phone visually */}
+        {/* Glow backdrop matching phone color */}
         <div 
-          className="phone-mockup"
           style={{ 
-            backgroundColor: '#0c0d12', 
-            borderColor: mainColorHex,
-            boxShadow: `0 10px 25px rgba(0,0,0,0.5), 0 0 15px ${mainColorHex}30`
+            position: 'absolute', 
+            width: '130px', 
+            height: '130px', 
+            borderRadius: '50%', 
+            background: `radial-gradient(circle, ${mainColorHex}40 0%, transparent 70%)`, 
+            filter: 'blur(10px)',
+            zIndex: 1 
+          }} 
+        />
+        
+        {/* Real phone image */}
+        <img 
+          src={product.image} 
+          alt={product.name} 
+          className="product-image"
+          style={{
+            height: '180px',
+            objectFit: 'contain',
+            zIndex: 2,
+            transition: 'var(--transition)',
+            filter: 'drop-shadow(0 12px 20px rgba(0,0,0,0.5))'
           }}
-        >
-          <div className="phone-screen" style={{ border: `1px solid ${mainColorHex}20` }}>
-            <div className="phone-camera-notch"></div>
-            <div className="phone-screen-logo" style={{ color: mainColorHex }}>
-              {product.brand}
-            </div>
-            <div className="phone-screen-spec">
-              {product.specs.ram} RAM
-            </div>
-            <div 
-              style={{
-                width: '100%',
-                height: '4px',
-                background: `linear-gradient(90deg, transparent, ${mainColorHex}, transparent)`,
-                position: 'absolute',
-                bottom: '30px',
-                left: 0,
-                opacity: 0.7
-              }}
-            />
-          </div>
-        </div>
+        />
       </div>
 
       <div className="card-rating">
@@ -79,12 +75,11 @@ export default function ProductCard({ product, onViewDetails }) {
         </div>
 
         <button 
-          className="card-action-btn"
+          className="btn btn-primary"
           onClick={() => onViewDetails(product)}
-          title="Xem chi tiết"
-          aria-label="View product details"
+          style={{ padding: '8px 16px', fontSize: '13px', borderRadius: '8px' }}
         >
-          <Eye size={18} />
+          Xem chi tiết
         </button>
       </div>
     </div>

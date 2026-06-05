@@ -39,7 +39,7 @@ export default function Navbar({ activeSection, setActiveSection, cartCount, onC
       <div className="container nav-container">
         <a href="#" className="logo" onClick={(e) => handleLinkClick(e, 'home')}>
           <Smartphone size={28} className="gradient-text" />
-          <span>GigaTech</span>
+          <span>GigaTech Outlet</span>
         </a>
 
         <ul className="nav-links">
