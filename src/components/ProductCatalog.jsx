@@ -26,8 +26,8 @@ export default function ProductCatalog({ products, onViewDetails }) {
       <div className="container">
         <div className="catalog-header">
           <div className="section-title">
-            <h2 className="animate-slide-up">Kho Máy Thanh Lý</h2>
-            <p className="animate-slide-up">Danh sách 10 mẫu điện thoại thanh lý xả kho giá tốt nhất</p>
+            <h2 className="animate-slide-up">Danh Mục Sản Phẩm</h2>
+            <p className="animate-slide-up">Khám phá 10 mẫu điện thoại cao cấp nhất hiện tại</p>
           </div>
 
           <ul className="brand-filters animate-slide-up">

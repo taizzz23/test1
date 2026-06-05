@@ -19,10 +19,10 @@ export default function Footer({ onLinkClick }) {
           <div className="footer-brand">
             <a href="#" className="logo" style={{ marginBottom: '16px', display: 'inline-flex' }}>
               <Smartphone size={24} className="gradient-text" />
-              <span>GigaTech Outlet</span>
+              <span>GigaTech</span>
             </a>
             <p>
-              GigaTech Outlet là hệ thống thanh lý và xả kho điện thoại di động chính hãng cao cấp lớn nhất Việt Nam. Chúng tôi cam kết mang lại sản phẩm chất lượng đã qua kiểm định nghiêm ngặt, giá rẻ nhất thị trường và chế độ bảo hành uy tín cho khách hàng.
+              GigaTech Store là hệ thống bán lẻ điện thoại di động chính hãng cao cấp hàng đầu Việt Nam. Chúng tôi cam kết mang lại sản phẩm chất lượng vượt trội, dịch vụ hậu mãi uy tín, và trải nghiệm mua sắm tuyệt vời nhất cho mọi khách hàng.
             </p>
             <div className="social-links">
               <a href="#" className="social-btn" aria-label="Facebook">
@@ -109,7 +109,7 @@ export default function Footer({ onLinkClick }) {
 
         {/* Footer Bottom copyright */}
         <div className="footer-bottom">
-          <p>© 2026 GigaTech Outlet. Tất cả quyền được bảo lưu.</p>
+          <p>© 2026 GigaTech Store. Tất cả quyền được bảo lưu.</p>
           <div style={{ display: 'flex', gap: '20px' }}>
             <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Chính sách bảo mật</a>
             <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Điều khoản dịch vụ</a>

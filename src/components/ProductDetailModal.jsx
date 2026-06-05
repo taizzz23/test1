@@ -162,21 +162,6 @@ export default function ProductDetailModal({ product, onClose, onAddToCart, onBu
                 ))}
               </div>
             </div>
-            <div 
-              style={{
-                background: 'rgba(239, 68, 68, 0.08)',
-                border: '1px solid rgba(239, 68, 68, 0.15)',
-                borderRadius: '8px',
-                padding: '12px 16px',
-                fontSize: '13px',
-                color: '#fca5a5',
-                marginBottom: '20px',
-                textAlign: 'left'
-              }}
-            >
-              <strong>Tình trạng thanh lý:</strong> {product.condition}
-            </div>
-
             <p className="modal-description">{product.description}</p>
 
             {/* Tabs details */}
