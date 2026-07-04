@@ -12,7 +12,7 @@ export default function Footer({ onLinkClick }) {
   };
 
   return (
-    <footer id="about" className="footer">
+    <footer className="footer">
       <div className="container">
         <div className="footer-grid">
           {/* Column 1: About Us / Intro */}
@@ -21,8 +21,17 @@ export default function Footer({ onLinkClick }) {
               <Smartphone size={24} className="gradient-text" />
               <span>GigaTech</span>
             </a>
-            <p>
-              GigaTech Store là hệ thống bán lẻ điện thoại di động chính hãng cao cấp hàng đầu Việt Nam. Chúng tôi cam kết mang lại sản phẩm chất lượng vượt trội, dịch vụ hậu mãi uy tín, và trải nghiệm mua sắm tuyệt vời nhất cho mọi khách hàng.
+            <p style={{ fontWeight: '700', color: '#fff', marginBottom: '8px' }}>
+              CÔNG TY TNHH MTV CÔNG NGHỆ GIGATECH
+            </p>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+              Mã số thuế: 0110486392
+            </p>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '12px' }}>
+              Năm hoạt động: Từ 2018 (8 năm hoạt động)
+            </p>
+            <p style={{ fontSize: '13px', lineHeight: '1.6' }}>
+              GigaTech Store là hệ thống bán lẻ điện thoại di động chính hãng cao cấp hàng đầu Việt Nam. Chúng tôi cam kết mang lại sản phẩm chất lượng vượt trội và dịch vụ hậu mãi uy tín.
             </p>
             <div className="social-links">
               <a href="#" className="social-btn" aria-label="Facebook">
@@ -109,7 +118,7 @@ export default function Footer({ onLinkClick }) {
 
         {/* Footer Bottom copyright */}
         <div className="footer-bottom">
-          <p>© 2026 GigaTech Store. Tất cả quyền được bảo lưu.</p>
+          <p>© 2026 Công ty TNHH MTV Công Nghệ GigaTech. MST: 0110486392. Bảo lưu mọi quyền.</p>
           <div style={{ display: 'flex', gap: '20px' }}>
             <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Chính sách bảo mật</a>
             <a href="#" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Điều khoản dịch vụ</a>

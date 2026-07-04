@@ -6,6 +6,7 @@ import ProductDetailModal from './components/ProductDetailModal';
 import CartDrawer from './components/CartDrawer';
 import CheckoutModal from './components/CheckoutModal';
 import Footer from './components/Footer';
+import About from './components/About';
 import { products } from './data/products';
 import { Check } from 'lucide-react';
 
@@ -167,6 +168,9 @@ export default function App() {
           products={products}
           onViewDetails={setSelectedProduct}
         />
+
+        {/* Dedicated About & Timeline Section */}
+        <About />
       </main>
 
       {/* Footer Info & Introduction */}
