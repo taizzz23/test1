@@ -1,10 +1,183 @@
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GigaTech - Smartphone Store</title><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head><body>
-<nav class="navbar"><div class="container nav-container"><a href="#home" class="logo"><span class="gradient-text">▣</span> GigaTech</a><ul class="nav-links"><li><a href="#home">Trang Chủ</a></li><li><a href="#products">Sản Phẩm</a></li><li><a href="#about">Giới Thiệu</a></li><li><a href="#contact">Liên Hệ</a></li></ul>{% if current_user %}<a href="{{ url_for('account') }}">Tài khoản: {{ current_user.name }}</a><a href="{{ url_for('wishlist') }}">♥ Yêu thích</a>{% else %}<a href="{{ url_for('login') }}">Đăng nhập</a><a href="{{ url_for('register') }}">Đăng ký</a>{% endif %}<a class="icon-btn cart-link" href="{{ url_for('cart') }}">🛍 Giỏ hàng <span class="badge-count">{{ cart_count }}</span></a></div></nav>
-{% with messages=get_flashed_messages() %}{% if messages %}<div class="flash-stack">{% for message in messages %}<div class="toast">✓ {{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
-<main><section id="home" class="hero container"><div class="hero-grid"><div class="hero-content"><div class="promo-tag">🔥 Khuyến mãi lớn nhất mùa hè: Giảm giá tới 22%</div><h1>Kỷ Nguyên<br><span class="gradient-text">Smartphone AI</span><br>Tối Tân Nhất</h1><p>Chào mừng bạn đến với GigaTech. Trải nghiệm các sản phẩm flagship cao cấp từ Apple, Samsung, Xiaomi với tính năng vượt trội, hỗ trợ trả góp 0% và bảo hành 1 đổi 1 trong 30 ngày.</p><div class="hero-buttons"><a href="#products" class="btn btn-primary">Mua Ngay</a><a href="#about" class="btn btn-secondary">Xem Giới Thiệu</a></div><div class="feature-tags"><span>🚚 Giao Hàng Miễn Phí</span><span>🛡 Bảo Hành 12 Tháng</span><span>🎧 Hỗ Trợ 24/7</span></div></div><div class="hero-image-container"><img src="{{ url_for('static',filename='banner.png') }}" alt="GigaTech Store" class="hero-image"></div></div></section>
-<section id="products" class="catalog-section"><div class="container"><div class="catalog-header"><form method="get" action="{{ url_for('index') }}"><input class="checkout-input" name="q" value="{{ search_query }}" placeholder="Tìm sản phẩm theo tên hoặc thương hiệu"><button class="btn btn-primary">Tìm kiếm</button></form><div class="section-title"><h2>Danh Mục Sản Phẩm</h2><p>Khám phá 10 mẫu điện thoại cao cấp nhất hiện tại</p></div><ul class="brand-filters">{% for value,label in brands %}<li><a class="filter-btn {% if brand==value %}active{% endif %}" href="{{ url_for('index',brand=value) }}#products">{{ label }}</a></li>{% endfor %}</ul></div>
-{% if products %}<div class="products-grid">{% for p in products %}<article class="glass-panel product-card glow-hover">{% if p.badge %}<span class="card-badge badge-tech">{{ p.badge }}</span>{% endif %}<div class="product-image-area"><img src="{{ p.image }}" alt="{{ p.name }}" class="product-image"></div><div class="card-rating"><span>★</span><strong>{{ p.rating }}</strong><span>({{ p.reviewCount }})</span></div><h3>{{ p.name }}</h3><div class="product-brand">{{ p.brand }}</div><div class="product-card-bottom"><div class="price-box"><span class="price-current">{{ p.price|money }}</span><span class="price-original">{{ p.originalPrice|money }}</span></div><a class="btn btn-primary detail-link" href="{{ url_for('index',product=p.id,brand=brand) }}#products">Xem chi tiết</a></div></article>{% endfor %}</div>{% else %}<p class="empty-state">Không tìm thấy sản phẩm phù hợp.</p>{% endif %}</div></section>
-<section id="about" class="catalog-section about-section"><div class="container"><div class="section-title centered"><h2>Giới Thiệu GigaTech</h2><p>Tìm hiểu về chặng đường phát triển và sứ mệnh của chúng tôi</p></div><div class="about-grid"><div class="glass-panel company-card"><span class="eyebrow">THÔNG TIN PHÁP LÝ</span><h3>Hồ Sơ Doanh Nghiệp</h3><h4>CÔNG TY TNHH MỘT THÀNH VIÊN CÔNG NGHỆ GIGATECH</h4><p><b>Mã số thuế:</b> 0110486392</p><p><b>Loại hình:</b> Công ty TNHH một thành viên</p><p><b>Năm hoạt động:</b> Từ năm 2018</p><p><b>Trụ sở:</b> 123 Đường Ba Tháng Hai, Quận 10, TP. Hồ Chí Minh</p><div class="promise"><b>✓ Cam kết của chúng tôi</b><p>Giá cả minh bạch, sản phẩm chất lượng và dịch vụ hậu mãi uy tín.</p></div></div><div class="timeline"><h3><span class="gradient-text">Lịch Sử</span> Hình Thành & Phát Triển</h3>{% for year,title,desc in [("2018","Khởi đầu hành trình","Thành lập cửa hàng GigaTech đầu tiên tại Quận 10."),("2021","Đại lý ủy quyền chính thức","Mở rộng hợp tác với Apple, Samsung và Xiaomi."),("2024","Chuyển đổi số O2O","Ra mắt hệ thống mua sắm trực tuyến kết hợp cửa hàng."),("2026","Bán lẻ thông minh","Nâng tầm trải nghiệm với tư vấn AI và dịch vụ hậu mãi.")] %}<div class="timeline-item"><span class="year">Năm {{ year }}</span><h4>{{ title }}</h4><p>{{ desc }}</p></div>{% endfor %}</div></div></div></section></main>
-<footer id="contact" class="footer"><div class="container"><div class="footer-grid"><div class="footer-brand"><a href="#home" class="logo">▣ GigaTech</a><p><b>CÔNG TY TNHH MTV CÔNG NGHỆ GIGATECH</b></p><p>Mã số thuế: 0110486392</p><p>GigaTech Store bán lẻ điện thoại di động cao cấp, cam kết chất lượng và dịch vụ hậu mãi uy tín.</p></div><div><h4 class="footer-section-title">Khám Phá</h4><ul class="footer-links"><li><a href="#home">Trang Chủ</a></li><li><a href="#products">Sản Phẩm</a></li><li><a href="#about">Giới Thiệu</a></li></ul></div><div><h4 class="footer-section-title">Hỗ Trợ</h4><ul class="footer-links"><li><a href="{{ url_for('cart') }}">Giỏ hàng</a></li><li><a href="#contact">Bảo hành</a></li><li><a href="#contact">Đổi trả</a></li></ul></div><div class="footer-newsletter"><h4 class="footer-section-title">Nhận Tin Mới</h4><p>Đăng ký email để nhận khuyến mãi.</p><form class="newsletter-form" action="{{ url_for('subscribe') }}" method="post"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><input class="newsletter-input" type="email" name="email" placeholder="Email của bạn" required><button class="btn btn-primary">Gửi</button></form></div></div><div class="footer-bottom"><span>© 2026 GigaTech Store.</span><span>Python Flask</span></div></div></footer>
-{% if selected_product %}<div class="modal-overlay"><section class="glass-panel modal-content"><a class="modal-close-btn close-link" href="{{ url_for('index',brand=brand) }}#products">×</a><div class="modal-grid"><div class="modal-visual-side"><div class="modal-visual-preview"><img src="{{ selected_product.image }}" alt="{{ selected_product.name }}" class="product-image detail-image"></div><div class="modal-colors-selection"><div class="selection-title">Màu sắc có sẵn</div><div class="color-dots-wrapper">{% for c in selected_product.colors %}<span class="color-dot-btn" title="{{ c.name }}"><span class="color-dot-inner" style="background:{{ c.hex }}"></span></span>{% endfor %}</div></div></div><div class="modal-info-side"><span class="modal-brand">{{ selected_product.brand }}</span><h2 class="modal-title">{{ selected_product.name }}</h2><div class="modal-rating-row"><span class="stars-list">★★★★★</span><span>{{ selected_product.rating }} / 5 ({{ selected_product.reviewCount }} đánh giá)</span></div><div class="modal-price-row"><span class="modal-price-current">{{ selected_product.price|money }}</span><span class="modal-price-original">{{ selected_product.originalPrice|money }}</span><span class="modal-price-discount">-{{ selected_product.discount }}%</span></div><p class="modal-description">{{ selected_product.description }}</p><div class="modal-tabs"><a class="tab-btn {% if tab=='specs' %}active{% endif %}" href="{{ url_for('index',product=selected_product.id,brand=brand,tab='specs') }}#products">Thông số kỹ thuật</a><a class="tab-btn {% if tab=='highlights' %}active{% endif %}" href="{{ url_for('index',product=selected_product.id,brand=brand,tab='highlights') }}#products">Đặc điểm nổi bật</a><a class="tab-btn {% if tab=='reviews' %}active{% endif %}" href="{{ url_for('index',product=selected_product.id,brand=brand,tab='reviews') }}#products">Đánh giá</a></div><div class="tab-pane">{% if tab=='specs' %}<table class="specs-table"><tbody>{% for key,label in [('screen','Màn hình'),('cpu','Vi xử lý'),('ram','RAM'),('battery','Pin'),('camera','Camera'),('os','Hệ điều hành'),('weight','Trọng lượng'),('material','Chất liệu')] %}<tr><td class="specs-label">{{ label }}</td><td class="specs-val">{{ selected_product.specs[key] }}</td></tr>{% endfor %}</tbody></table>{% elif tab=='highlights' %}<ul class="highlights-list">{% for h in selected_product.highlights %}<li>✓ {{ h }}</li>{% endfor %}</ul>{% else %}<div>{% for r in reviews %}<p><b>{{ r.name }}</b> · {{ '★' * r.rating }}<br>{{ r.content }}</p>{% else %}<p>Chưa có đánh giá nào.</p>{% endfor %}{% if current_user %}<form method="post" action="{{ url_for('add_review',pid=selected_product.id) }}"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><label>Số sao <select name="rating" class="checkout-input"><option value="5">5 sao</option><option value="4">4 sao</option><option value="3">3 sao</option><option value="2">2 sao</option><option value="1">1 sao</option></select></label><textarea name="content" class="checkout-input" required minlength="5" placeholder="Chia sẻ trải nghiệm của bạn"></textarea><button class="btn btn-primary">Gửi đánh giá</button></form>{% else %}<a href="{{ url_for('login') }}">Đăng nhập để đánh giá</a>{% endif %}</div>{% endif %}</div><form class="variant-form" action="{{ url_for('add_to_cart') }}" method="post"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><input type="hidden" name="product_id" value="{{ selected_product.id }}"><label>Màu sắc<select name="color_index">{% for c in selected_product.colors %}<option value="{{ loop.index0 }}">{{ c.name }}</option>{% endfor %}</select></label><label>Dung lượng<select name="storage_index">{% for s in selected_product.storages %}<option value="{{ loop.index0 }}">{{ s.size }} (+{{ s.priceOffset|money }})</option>{% endfor %}</select></label><div class="modal-actions"><button class="btn btn-secondary" name="intent" value="add">Thêm vào giỏ</button><button class="btn btn-primary" name="intent" value="buy">Mua ngay</button></div></form></div></div></section></div>{% endif %}
-</body></html>
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>GigaTech | Điện thoại chính hãng, giá tốt</title>
+  <meta name="description" content="Khám phá điện thoại Apple, Samsung, Xiaomi và nhiều thương hiệu tại GigaTech.">
+  <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+</head>
+<body class="storefront-page">
+  <div class="top-strip">
+    <div class="container top-strip-inner">
+      <span>🚚 Miễn phí vận chuyển cho đơn từ 1.000.000đ</span>
+      <span>🛡 Bảo hành chính hãng 12 tháng</span>
+      <span>🎧 Hỗ trợ khách hàng 24/7</span>
+    </div>
+  </div>
+  <header class="store-header">
+    <div class="container store-header-main">
+      <a href="{{ url_for('index') }}" class="logo store-logo"><span class="logo-mark">G</span><span>Giga<span class="gradient-text">Tech</span></span></a>
+      <form class="store-search" method="get" action="{{ url_for('index') }}">
+        <span aria-hidden="true">⌕</span>
+        <input name="q" value="{{ search_query }}" placeholder="Tìm kiếm điện thoại, thương hiệu..." aria-label="Tìm kiếm sản phẩm">
+        <button type="submit">Tìm kiếm</button>
+      </form>
+      <div class="store-actions">
+        {% if current_user %}
+          <a href="{{ url_for('account') }}">👤 <span>{{ current_user.name }}</span></a>
+          <a href="{{ url_for('wishlist') }}">♡ <span>Yêu thích</span></a>
+        {% else %}
+          <a href="{{ url_for('login') }}">👤 <span>Đăng nhập</span></a>
+          <a href="{{ url_for('register') }}">Đăng ký</a>
+        {% endif %}
+        <a class="store-cart" href="{{ url_for('cart') }}">🛒 <span>Giỏ hàng</span><b>{{ cart_count }}</b></a>
+      </div>
+    </div>
+    <div class="store-nav">
+      <div class="container store-nav-inner">
+        <a href="{{ url_for('index') }}" class="active">⌂ Trang chủ</a>
+        <a href="#products">▦ Sản phẩm</a>
+        <a href="#about">✦ Giới thiệu</a>
+        <a href="#contact">☏ Liên hệ</a>
+      </div>
+    </div>
+  </header>
+
+  {% with messages=get_flashed_messages() %}
+    {% if messages %}<div class="flash-stack">{% for message in messages %}<div class="toast">✓ {{ message }}</div>{% endfor %}</div>{% endif %}
+  {% endwith %}
+
+  <main>
+    <section id="home" class="store-hero container">
+      <div class="store-hero-copy">
+        <span class="store-kicker">GIGATECH STORE · CÔNG NGHỆ MỖI NGÀY</span>
+        <h1>Nâng tầm trải nghiệm<br><span>cùng công nghệ mới</span></h1>
+        <p>Khám phá smartphone chính hãng từ những thương hiệu hàng đầu. Giá tốt, tư vấn tận tâm và dịch vụ hậu mãi đáng tin cậy.</p>
+        <div class="store-hero-buttons">
+          <a class="store-primary-btn" href="#products">Khám phá sản phẩm <span>→</span></a>
+          <a class="store-secondary-btn" href="#about">Về GigaTech</a>
+        </div>
+        <div class="store-benefits"><span>✓ Sản phẩm chất lượng</span><span>✓ Hỗ trợ tận tâm</span><span>✓ Thanh toán tiện lợi</span></div>
+      </div>
+      <div class="store-hero-visual">
+        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+        {% if products %}<img src="{{ products[0].image }}" alt="{{ products[0].name }}" class="hero-phone-image">{% endif %}
+        <div class="hero-floating-card"><strong>GigaTech</strong><span>Chọn công nghệ phù hợp với bạn</span></div>
+        <span class="hero-sparkle sparkle-one">✦</span><span class="hero-sparkle sparkle-two">✧</span>
+      </div>
+    </section>
+
+    <section class="store-trust container" aria-label="Dịch vụ GigaTech">
+      <div><span>🚚</span><p><b>Giao hàng nhanh</b><small>Đóng gói an toàn</small></p></div>
+      <div><span>🛡️</span><p><b>Bảo hành uy tín</b><small>Hỗ trợ sau mua</small></p></div>
+      <div><span>💳</span><p><b>Thanh toán linh hoạt</b><small>Nhiều lựa chọn tiện lợi</small></p></div>
+      <div><span>🎧</span><p><b>Tư vấn tận tâm</b><small>Đồng hành cùng bạn</small></p></div>
+    </section>
+
+    <section id="products" class="store-catalog">
+      <div class="container">
+        <div class="store-section-heading">
+          <div><span class="store-kicker">LỰA CHỌN CỦA BẠN</span><h2>Sản phẩm nổi bật</h2><p>Tìm chiếc điện thoại phù hợp với phong cách và nhu cầu của bạn.</p></div>
+          <span class="product-count">{{ products|length }} sản phẩm</span>
+        </div>
+        <div class="store-brand-list">
+          {% for value,label in brands %}
+            <a class="store-brand-chip {% if brand==value %}active{% endif %}" href="{{ url_for('index',brand=value) }}#products">{{ label }}</a>
+          {% endfor %}
+        </div>
+        {% if products %}
+          <div class="store-product-grid">
+            {% for p in products %}
+              <article class="store-product-card">
+                <div class="store-product-photo">
+                  {% if p.badge %}<span class="store-product-badge">{{ p.badge }}</span>{% endif %}
+                  {% if p.discount %}<span class="store-discount">-{{ p.discount }}%</span>{% endif %}
+                  <a href="{{ url_for('index',product=p.id,brand=brand) }}#products" aria-label="Xem {{ p.name }}">
+                    <img src="{{ p.image }}" alt="{{ p.name }}" loading="lazy" class="store-product-image">
+                  </a>
+                  {% if current_user %}
+                    <form class="store-heart-form" method="post" action="{{ url_for('toggle_wishlist',pid=p.id) }}">
+                      <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+                      <button type="submit" aria-label="Thêm hoặc xóa yêu thích">♡</button>
+                    </form>
+                  {% endif %}
+                </div>
+                <div class="store-product-info">
+                  <span class="store-product-brand">{{ p.brand }}</span>
+                  <h3><a href="{{ url_for('index',product=p.id,brand=brand) }}#products">{{ p.name }}</a></h3>
+                  <div class="store-product-rating"><span>★★★★★</span><b>{{ p.rating }}</b><small>({{ p.reviewCount }} đánh giá)</small></div>
+                  <div class="store-product-price"><strong>{{ p.price|money }}</strong><del>{{ p.originalPrice|money }}</del></div>
+                  <a class="store-add-btn" href="{{ url_for('index',product=p.id,brand=brand) }}#products">Xem chi tiết <span>→</span></a>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="store-empty"><span>⌕</span><h3>Chưa tìm thấy sản phẩm</h3><p>Thử từ khóa khác hoặc xem tất cả sản phẩm nhé.</p><a class="store-primary-btn" href="{{ url_for('index') }}">Xem tất cả</a></div>
+        {% endif %}
+      </div>
+    </section>
+
+    <section id="about" class="store-about">
+      <div class="container">
+        <div class="store-section-heading"><div><span class="store-kicker">VỀ CHÚNG TÔI</span><h2>Công nghệ tốt, trải nghiệm tốt</h2><p>GigaTech hướng đến trải nghiệm mua sắm rõ ràng, thuận tiện và đáng tin cậy.</p></div></div>
+        <div class="store-about-grid">
+          <div class="store-about-card"><span class="about-icon">✦</span><h3>Chọn mua an tâm</h3><p>Thông tin sản phẩm và giá bán được trình bày rõ ràng để bạn dễ dàng so sánh trước khi quyết định.</p></div>
+          <div class="store-about-card"><span class="about-icon">♡</span><h3>Luôn đồng hành</h3><p>Đội ngũ hỗ trợ sẵn sàng giải đáp thắc mắc và đồng hành cùng bạn trong quá trình mua sắm.</p></div>
+          <div class="store-about-card"><span class="about-icon">⌁</span><h3>Không ngừng đổi mới</h3><p>Cập nhật các dòng smartphone và xu hướng công nghệ để bạn có thêm nhiều lựa chọn.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact" class="store-footer">
+    <div class="container store-footer-grid">
+      <div><a href="{{ url_for('index') }}" class="logo store-logo"><span class="logo-mark">G</span><span>Giga<span class="gradient-text">Tech</span></span></a><p>GigaTech – đồng hành cùng bạn trên hành trình khám phá công nghệ.</p></div>
+      <div><h4>Khám phá</h4><a href="#home">Trang chủ</a><a href="#products">Sản phẩm</a><a href="#about">Giới thiệu</a></div>
+      <div><h4>Hỗ trợ</h4><a href="{{ url_for('cart') }}">Giỏ hàng</a><a href="{{ url_for('account') if current_user else url_for('login') }}">Tài khoản</a><a href="#contact">Chăm sóc khách hàng</a></div>
+      <div><h4>Nhận tin mới</h4><p>Đăng ký email để nhận thông tin và ưu đãi mới.</p><form class="store-newsletter" action="{{ url_for('subscribe') }}" method="post"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><input type="email" name="email" placeholder="Email của bạn" required><button type="submit">Gửi</button></form></div>
+    </div>
+    <div class="container store-footer-bottom">© 2026 GigaTech Store. All rights reserved.</div>
+  </footer>
+
+  {% if selected_product %}
+    <div class="modal-overlay">
+      <section class="glass-panel modal-content">
+        <a class="modal-close-btn close-link" href="{{ url_for('index',brand=brand) }}#products">×</a>
+        <div class="modal-grid">
+          <div class="modal-visual-side">
+            <div class="modal-visual-preview"><img src="{{ selected_product.image }}" alt="{{ selected_product.name }}" class="product-image detail-image"></div>
+            <div class="modal-colors-selection"><div class="selection-title">Màu sắc có sẵn</div><div class="color-dots-wrapper">{% for c in selected_product.colors %}<span class="color-dot-btn" title="{{ c.name }}"><span class="color-dot-inner" style="background:{{ c.hex }}"></span></span>{% endfor %}</div></div>
+          </div>
+          <div class="modal-info-side">
+            <span class="modal-brand">{{ selected_product.brand }}</span><h2 class="modal-title">{{ selected_product.name }}</h2>
+            <div class="modal-rating-row"><span class="stars-list">★★★★★</span><span>{{ selected_product.rating }} / 5 ({{ selected_product.reviewCount }} đánh giá)</span></div>
+            <div class="modal-price-row"><span class="modal-price-current">{{ selected_product.price|money }}</span><span class="modal-price-original">{{ selected_product.originalPrice|money }}</span><span class="modal-price-discount">-{{ selected_product.discount }}%</span></div>
+            <p class="modal-description">{{ selected_product.description }}</p>
+            <div class="modal-tabs"><a class="tab-btn {% if tab=='specs' %}active{% endif %}" href="{{ url_for('index',product=selected_product.id,brand=brand,tab='specs') }}#products">Thông số kỹ thuật</a><a class="tab-btn {% if tab=='highlights' %}active{% endif %}" href="{{ url_for('index',product=selected_product.id,brand=brand,tab='highlights') }}#products">Đặc điểm nổi bật</a><a class="tab-btn {% if tab=='reviews' %}active{% endif %}" href="{{ url_for('index',product=selected_product.id,brand=brand,tab='reviews') }}#products">Đánh giá</a></div>
+            <div class="tab-pane">
+              {% if tab=='specs' %}
+                <table class="specs-table"><tbody>{% for key,label in [('screen','Màn hình'),('cpu','Vi xử lý'),('ram','RAM'),('battery','Pin'),('camera','Camera'),('os','Hệ điều hành'),('weight','Trọng lượng'),('material','Chất liệu')] %}<tr><td class="specs-label">{{ label }}</td><td class="specs-val">{{ selected_product.specs[key] }}</td></tr>{% endfor %}</tbody></table>
+              {% elif tab=='highlights' %}
+                <ul class="highlights-list">{% for h in selected_product.highlights %}<li>✓ {{ h }}</li>{% endfor %}</ul>
+              {% else %}
+                <div>{% for r in reviews %}<p><b>{{ r.name }}</b> · {{ '★' * r.rating }}<br>{{ r.content }}</p>{% else %}<p>Chưa có đánh giá nào.</p>{% endfor %}
+                  {% if current_user %}<form method="post" action="{{ url_for('add_review',pid=selected_product.id) }}"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><label>Số sao <select name="rating" class="checkout-input"><option value="5">5 sao</option><option value="4">4 sao</option><option value="3">3 sao</option><option value="2">2 sao</option><option value="1">1 sao</option></select></label><textarea name="content" class="checkout-input" required minlength="5" placeholder="Chia sẻ trải nghiệm của bạn"></textarea><button class="btn btn-primary">Gửi đánh giá</button></form>{% else %}<a href="{{ url_for('login') }}">Đăng nhập để đánh giá</a>{% endif %}
+                </div>
+              {% endif %}
+            </div>
+            <form class="variant-form" action="{{ url_for('add_to_cart') }}" method="post">
+              <input type="hidden" name="_csrf" value="{{ csrf_token }}"><input type="hidden" name="product_id" value="{{ selected_product.id }}">
+              <label>Màu sắc<select name="color_index">{% for c in selected_product.colors %}<option value="{{ loop.index0 }}">{{ c.name }}</option>{% endfor %}</select></label>
+              <label>Dung lượng<select name="storage_index">{% for s in selected_product.storages %}<option value="{{ loop.index0 }}">{{ s.size }} (+{{ s.priceOffset|money }})</option>{% endfor %}</select></label>
+              <div class="modal-actions"><button class="btn btn-secondary" name="intent" value="add">Thêm vào giỏ</button><button class="btn btn-primary" name="intent" value="buy">Mua ngay</button></div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  {% endif %}
+</body>
+</html>
