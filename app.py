@@ -106,6 +106,10 @@ app.jinja_env.filters["money"] = money
 
 @app.before_request
 def csrf_protect():
+    global PRODUCTS, BY_ID
+    with (ROOT / "data" / "products.json").open(encoding="utf-8") as product_file:
+        PRODUCTS = json.load(product_file)
+    BY_ID = {int(product["id"]): product for product in PRODUCTS}
     if request.method == "POST":
         sent = request.form.get("_csrf", "")
         expected = session.get("_csrf", "")
@@ -149,6 +153,16 @@ def admin_required(view):
 
 def cart_items():
     return session.setdefault("cart", [])
+
+
+def save_products():
+    path = ROOT / "data" / "products.json"
+    temp_path = path.with_suffix(".json.tmp")
+    with temp_path.open("w", encoding="utf-8") as product_file:
+        json.dump(PRODUCTS, product_file, ensure_ascii=False, indent=2)
+    temp_path.replace(path)
+    global BY_ID
+    BY_ID = {int(product["id"]): product for product in PRODUCTS}
 
 
 def product_or_404(pid):
@@ -404,7 +418,81 @@ def complete():
 def admin():
     orders = db().execute("SELECT * FROM orders ORDER BY id DESC LIMIT 100").fetchall()
     stats = dashboard_stats(db())
-    return render_template("admin.html",orders=orders,stats=stats)
+    product_query = request.args.get("q", "").strip().lower()
+    products = [p for p in PRODUCTS if product_query in p["name"].lower() or product_query in p.get("brand", "").lower()]
+    stats["products"] = len(PRODUCTS)
+    return render_template("admin.html", orders=orders, stats=stats, products=products,
+                           product_query=request.args.get("q", ""))
+
+
+@app.route("/admin/products/new", methods=["GET", "POST"])
+@admin_required
+def admin_create_product():
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        brand = request.form.get("brand", "").strip()
+        image = request.form.get("image", "").strip()
+        description = request.form.get("description", "").strip()
+        price = request.form.get("price", type=int)
+        original_price = request.form.get("originalPrice", type=int) or price
+        if not name or not brand or not image or not price or price < 0 or original_price < 0:
+            flash("Vui lòng nhập đầy đủ tên, thương hiệu, hình ảnh và giá hợp lệ.")
+            return render_template("admin_product_form.html", product=request.form, mode="new")
+        product = {
+            "id": max((int(p["id"]) for p in PRODUCTS), default=0) + 1,
+            "name": name, "brand": brand, "price": price, "originalPrice": original_price,
+            "discount": max(0, round((original_price - price) / original_price * 100)) if original_price else 0,
+            "rating": 5.0, "reviewCount": 0, "badge": request.form.get("badge", "").strip(),
+            "image": image, "colorTheme": "linear-gradient(135deg, #263449 0%, #101827 100%)",
+            "colors": [{"name": "Mặc định", "hex": "#64748b"}],
+            "storages": [{"size": "Mặc định", "priceOffset": 0}],
+            "description": description or name, "specs": {}, "highlights": []
+        }
+        PRODUCTS.append(product)
+        save_products()
+        flash("Đã thêm sản phẩm mới.")
+        return redirect(url_for("admin") + "#products")
+    return render_template("admin_product_form.html", product={}, mode="new")
+
+
+@app.route("/admin/products/<int:pid>/edit", methods=["GET", "POST"])
+@admin_required
+def admin_edit_product(pid):
+    product = product_or_404(pid)
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        brand = request.form.get("brand", "").strip()
+        image = request.form.get("image", "").strip()
+        price = request.form.get("price", type=int)
+        original_price = request.form.get("originalPrice", type=int) or price
+        if not name or not brand or not image or price is None or price < 0 or original_price < 0:
+            flash("Vui lòng nhập đầy đủ tên, thương hiệu, hình ảnh và giá hợp lệ.")
+            return render_template("admin_product_form.html", product=product, mode="edit")
+        product.update({
+            "name": name, "brand": brand, "image": image, "price": price,
+            "originalPrice": original_price,
+            "discount": max(0, round((original_price - price) / original_price * 100)) if original_price else 0,
+            "badge": request.form.get("badge", "").strip(),
+            "description": request.form.get("description", "").strip()
+        })
+        save_products()
+        flash("Đã cập nhật sản phẩm.")
+        return redirect(url_for("admin") + "#products")
+    return render_template("admin_product_form.html", product=product, mode="edit")
+
+
+@app.post("/admin/products/<int:pid>/delete")
+@admin_required
+def admin_delete_product(pid):
+    global PRODUCTS
+    product_or_404(pid)
+    PRODUCTS = [product for product in PRODUCTS if int(product["id"]) != pid]
+    db().execute("DELETE FROM wishlist WHERE product_id=?", (pid,))
+    db().execute("DELETE FROM reviews WHERE product_id=?", (pid,))
+    db().commit()
+    save_products()
+    flash("Đã xóa sản phẩm khỏi cửa hàng.")
+    return redirect(url_for("admin") + "#products")
 
 
 @app.post("/admin/orders/<int:order_id>")
