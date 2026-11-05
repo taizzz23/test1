@@ -9,7 +9,7 @@
     "rating": 4.9,
     "reviewCount": 420,
     "badge": "Hot Sale",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-15-pro-max.jpg",
+    "image": "/static/products/product-1.svg",
     "colorTheme": "linear-gradient(135deg, #2c2c2e 0%, #1c1c1e 100%)",
     "colors": [
       {
@@ -71,7 +71,7 @@
     "rating": 4.8,
     "reviewCount": 385,
     "badge": "Galaxy AI",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s24-ultra.jpg",
+    "image": "/static/products/product-2.svg",
     "colorTheme": "linear-gradient(135deg, #1d2026 0%, #0c0e12 100%)",
     "colors": [
       {
@@ -133,7 +133,7 @@
     "rating": 4.9,
     "reviewCount": 154,
     "badge": "Leica Camera",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-14-ultra.jpg",
+    "image": "/static/products/product-3.svg",
     "colorTheme": "linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)",
     "colors": [
       {
@@ -179,7 +179,7 @@
     "rating": 4.7,
     "reviewCount": 110,
     "badge": "Pure Google",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/google-pixel-8-pro.jpg",
+    "image": "/static/products/product-4.svg",
     "colorTheme": "linear-gradient(135deg, #3d5a80 0%, #293241 100%)",
     "colors": [
       {
@@ -233,7 +233,7 @@
     "rating": 4.8,
     "reviewCount": 215,
     "badge": "Performance Beast",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/oneplus-12.jpg",
+    "image": "/static/products/product-5.svg",
     "colorTheme": "linear-gradient(135deg, #1c352d 0%, #0f1c18 100%)",
     "colors": [
       {
@@ -283,7 +283,7 @@
     "rating": 4.8,
     "reviewCount": 512,
     "badge": "Best Seller",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-15.jpg",
+    "image": "/static/products/product-6.svg",
     "colorTheme": "linear-gradient(135deg, #e8d7f1 0%, #d3bccc 100%)",
     "colors": [
       {
@@ -349,7 +349,7 @@
     "rating": 4.7,
     "reviewCount": 94,
     "badge": "Folding Tech",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-z-fold5.jpg",
+    "image": "/static/products/product-7.svg",
     "colorTheme": "linear-gradient(135deg, #2a2e3d 0%, #151821 100%)",
     "colors": [
       {
@@ -403,7 +403,7 @@
     "rating": 4.6,
     "reviewCount": 78,
     "badge": "Pro Creator",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/sony-xperia-1-vi.jpg",
+    "image": "/static/products/product-8.svg",
     "colorTheme": "linear-gradient(135deg, #383a35 0%, #20211e 100%)",
     "colors": [
       {
@@ -457,7 +457,7 @@
     "rating": 4.9,
     "reviewCount": 142,
     "badge": "Ultimate Gaming",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/asus-rog-phone-8-pro.jpg",
+    "image": "/static/products/product-9.svg",
     "colorTheme": "linear-gradient(135deg, #111111 0%, #000000 100%)",
     "colors": [
       {
@@ -503,7 +503,7 @@
     "rating": 4.8,
     "reviewCount": 89,
     "badge": "Dual Periscope",
-    "image": "https://fdn2.gsmarena.com/vv/bigpic/oppo-find-x7-ultra.jpg",
+    "image": "/static/products/product-10.svg",
     "colorTheme": "linear-gradient(135deg, #193140 0%, #0d1a21 100%)",
     "colors": [
       {
