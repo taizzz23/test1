@@ -1778,3 +1778,85 @@ body.storefront-page .modal-content a{color:inherit}
 @media(max-width:1100px){.store-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.store-header-main{gap:18px}.store-actions{gap:10px}}
 @media(max-width:760px){body.storefront-page .container{padding-left:17px;padding-right:17px}.top-strip-inner{justify-content:center;min-height:32px}.top-strip-inner span:nth-child(2),.top-strip-inner span:nth-child(3){display:none}.store-header-main{grid-template-columns:1fr auto;gap:10px;padding-top:12px;padding-bottom:12px}.store-logo{font-size:23px}.store-search{grid-column:1/-1;grid-row:2;height:42px}.store-actions{gap:10px}.store-actions a span{display:none}.store-actions a{font-size:17px}.store-nav-inner{gap:23px;overflow:auto}.store-nav a{white-space:nowrap;font-size:11px}.store-hero{grid-template-columns:1fr;margin-top:12px}.store-hero-copy{padding:35px 25px 8px}.store-hero h1{font-size:35px}.store-hero-visual{min-height:220px}.hero-phone-image{height:205px}.hero-orbit{width:220px;height:220px}.orbit-two{width:165px;height:165px}.hero-floating-card{right:12px;bottom:12px}.store-benefits{gap:9px}.store-benefits span{font-size:9px}.store-trust{grid-template-columns:repeat(2,1fr);margin-bottom:30px}.store-trust>div{padding:12px}.store-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.store-product-photo{height:170px;padding:10px}.store-product-image{max-height:150px}.store-product-info{padding:12px}.store-product-info h3{font-size:12px;min-height:36px}.store-product-price strong{font-size:13px}.store-section-heading h2{font-size:24px}.store-about-grid{grid-template-columns:1fr}.store-footer-grid{grid-template-columns:1fr 1fr;gap:22px}}
 @media(max-width:420px){.store-product-photo{height:145px}.store-product-image{max-height:128px}.store-product-info h3{font-size:11px}.store-product-rating small{display:none}.store-product-price del{font-size:9px}.store-footer-grid{grid-template-columns:1fr}.store-actions{gap:7px}}
+
+
+/* ===== Higher contrast / vivid GigaTech storefront ===== */
+body.storefront-page {
+  --store-purple: #6420d8;
+  --store-purple-dark: #4b12b8;
+  --store-ink: #111326;
+  --store-muted: #555b70;
+  background: #f2f3f9;
+  color: #111326;
+}
+body.storefront-page .store-header { background: #fff; box-shadow: 0 5px 24px rgba(28,20,65,.12); }
+body.storefront-page .store-logo { color: #111326 !important; }
+body.storefront-page .store-search { background: #e9eaf3; border: 1px solid #d5d7e5; }
+body.storefront-page .store-search input { color: #17182c; font-weight: 600; }
+body.storefront-page .store-search input::placeholder { color: #666b80; opacity: 1; }
+body.storefront-page .store-search > span { color: #4d526b; }
+body.storefront-page .store-search button,
+body.storefront-page .store-newsletter button,
+body.storefront-page .store-add-btn,
+body.storefront-page .store-primary-btn {
+  background: linear-gradient(115deg,#7628ed 0%,#5100c9 100%);
+  color: #fff !important;
+  box-shadow: 0 5px 14px rgba(91,24,201,.24);
+}
+body.storefront-page .store-nav a { color: #34364d; font-weight: 800; }
+body.storefront-page .store-nav a:hover,
+body.storefront-page .store-nav a.active { color: #5b16d2; border-color: #6d24e8; }
+body.storefront-page .store-actions a { color: #202139; font-weight: 800; }
+body.storefront-page .store-cart { background: #e9ddff; }
+body.storefront-page .store-cart b { background: #5c16d4; }
+body.storefront-page .store-hero {
+  background: radial-gradient(circle at 75% 40%,#8040ed 0,#4d16a8 38%,#17102e 82%);
+  box-shadow: 0 18px 42px rgba(54,20,115,.25);
+}
+body.storefront-page .store-kicker { color: #6420d8; }
+body.storefront-page .store-hero .store-kicker { color: #e0ceff; }
+body.storefront-page .store-hero-copy p { color: #f0eaff; }
+body.storefront-page .store-trust > div { border-color: #dedff0; box-shadow: 0 6px 20px rgba(30,25,70,.07); }
+body.storefront-page .store-trust b { color: #17182e; }
+body.storefront-page .store-trust small { color: #555b70; }
+body.storefront-page .store-catalog { background: #fff; }
+body.storefront-page .store-section-heading h2 { color: #15162b; }
+body.storefront-page .store-section-heading p { color: #555b70; }
+body.storefront-page .product-count { background: #ece5ff; color: #4e16b5; font-weight: 800; }
+body.storefront-page .store-brand-chip { border-color: #d8d6e6; color: #37394f !important; }
+body.storefront-page .store-brand-chip:hover,
+body.storefront-page .store-brand-chip.active { background: #6420d8; border-color: #6420d8; color: #fff !important; }
+body.storefront-page .store-product-card { border-color: #dedfea; box-shadow: 0 3px 12px rgba(24,24,55,.045); }
+body.storefront-page .store-product-photo { background: linear-gradient(180deg,#f0eff8,#e7e8f2); }
+body.storefront-page .store-product-brand { color: #565b70; }
+body.storefront-page .store-product-info h3 { color: #17182d; }
+body.storefront-page .store-product-rating b { color: #34364c; }
+body.storefront-page .store-product-rating small,
+body.storefront-page .store-product-price del { color: #656a7e; }
+body.storefront-page .store-product-price strong { color: #d51d45; }
+body.storefront-page .store-product-badge { background: #5c18d1; }
+body.storefront-page .store-discount { background: #d92750; }
+body.storefront-page .store-about { background: #f0eff8; }
+body.storefront-page .store-about-card { border-color: #dcdbea; box-shadow: 0 5px 18px rgba(24,24,55,.04); }
+body.storefront-page .store-about-card h3 { color: #17182d; }
+body.storefront-page .store-about-card p { color: #555b70; }
+body.storefront-page .store-footer { background: #111126; }
+body.storefront-page .store-footer p,
+body.storefront-page .store-footer-grid > div > a:not(.logo) { color: #d0cee1; }
+body.storefront-page .store-footer-bottom { color: #c0bdd5; }
+body.storefront-page .flash-stack { top: 112px; right: 18px; max-width: min(390px,calc(100vw - 36px)); gap: 9px; }
+body.storefront-page .toast {
+  background: #17172e;
+  color: #fff;
+  border: 1px solid #8b5cf6;
+  border-left: 5px solid #7c3aed;
+  border-radius: 11px;
+  padding: 13px 17px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  box-shadow: 0 10px 28px rgba(18,12,45,.28);
+}
+@media(max-width:760px) {
+  body.storefront-page .flash-stack { top: 125px; right: 10px; max-width: calc(100vw - 20px); }
+}
