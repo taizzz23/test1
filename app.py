@@ -236,12 +236,15 @@ def order_detail(order_id):
     order = db().execute("SELECT * FROM orders WHERE id=?", (order_id,)).fetchone()
     if not order:
         abort(404)
-    if order["user_id"] != session.get("user_id") and session.get("user_id"):
-        role = db().execute("SELECT role FROM users WHERE id=?", (session["user_id"],)).fetchone()
+    if order["user_id"] is None:
+        if session.get("last_order_id") != order_id:
+            role = db().execute("SELECT role FROM users WHERE id=?", (session.get("user_id"),)).fetchone() if session.get("user_id") else None
+            if not role or role["role"] != "admin":
+                abort(403)
+    elif order["user_id"] != session.get("user_id"):
+        role = db().execute("SELECT role FROM users WHERE id=?", (session.get("user_id"),)).fetchone() if session.get("user_id") else None
         if not role or role["role"] != "admin":
             abort(403)
-    elif order["user_id"] != session.get("user_id"):
-        abort(403)
     items = db().execute("SELECT * FROM order_items WHERE order_id=?", (order_id,)).fetchall()
     return render_template("order_detail.html", order=order, items=items)
 
