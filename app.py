@@ -435,7 +435,7 @@ def admin_create_product():
         description = request.form.get("description", "").strip()
         price = request.form.get("price", type=int)
         original_price = request.form.get("originalPrice", type=int) or price
-        if not name or not brand or not image or not price or price < 0 or original_price < 0:
+        if not name or not brand or not image or not (image.startswith("/static/") or image.startswith("https://")) or price is None or price < 0 or original_price < 0:
             flash("Vui lòng nhập đầy đủ tên, thương hiệu, hình ảnh và giá hợp lệ.")
             return render_template("admin_product_form.html", product=request.form, mode="new")
         product = {
@@ -465,7 +465,7 @@ def admin_edit_product(pid):
         image = request.form.get("image", "").strip()
         price = request.form.get("price", type=int)
         original_price = request.form.get("originalPrice", type=int) or price
-        if not name or not brand or not image or price is None or price < 0 or original_price < 0:
+        if not name or not brand or not image or not (image.startswith("/static/") or image.startswith("https://")) or price is None or price < 0 or original_price < 0:
             flash("Vui lòng nhập đầy đủ tên, thương hiệu, hình ảnh và giá hợp lệ.")
             return render_template("admin_product_form.html", product=product, mode="edit")
         product.update({
