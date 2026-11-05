@@ -8,6 +8,12 @@ from pathlib import Path
 from flask import Flask, abort, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from modules.auth_service import valid_registration
+from modules.catalog_service import filter_products
+from modules.cart_service import add_cart_item, change_cart_quantity, remove_cart_item
+from modules.order_service import calculate_discount, validate_checkout
+from modules.admin_service import dashboard_stats
+
 ROOT = Path(__file__).resolve().parent
 DB_PATH = ROOT / "data" / "store.db"
 with (ROOT / "data" / "products.json").open(encoding="utf-8") as f:
@@ -158,13 +164,7 @@ def index():
     query = request.args.get("q", "").strip().lower()
     pid = request.args.get("product", type=int)
     selected = product_or_404(pid) if pid else None
-    products = PRODUCTS
-    if brand in {"Apple", "Samsung", "Xiaomi"}:
-        products = [p for p in products if p["brand"] == brand]
-    elif brand == "Khác":
-        products = [p for p in products if p["brand"] not in {"Apple", "Samsung", "Xiaomi"}]
-    if query:
-        products = [p for p in products if query in p["name"].lower() or query in p["brand"].lower()]
+    products = filter_products(PRODUCTS, brand, query)
     brands = [("All","Tất cả"),("Apple","Apple (iPhone)"),("Samsung","Samsung"),("Xiaomi","Xiaomi"),("Khác","Thương hiệu khác")]
     tab = request.args.get("tab", "specs")
     wishlist_ids = set()
@@ -184,7 +184,7 @@ def register():
         name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
-        if len(name) < 2 or "@" not in email or len(password) < 8:
+        if not valid_registration(name, email, password):
             flash("Vui lòng nhập tên hợp lệ, email hợp lệ và mật khẩu ít nhất 8 ký tự.")
         else:
             try:
@@ -301,12 +301,7 @@ def add_to_cart():
         "price":p["price"]+s["priceOffset"],"color":c["name"],"color_hex":c["hex"],
         "storage":s["size"],"quantity":1}
     cart = cart_items()
-    for old in cart:
-        if (old["id"],old["color"],old["storage"]) == (item["id"],item["color"],item["storage"]):
-            old["quantity"] += 1
-            break
-    else:
-        cart.append(item)
+    add_cart_item(cart, item)
     session.modified = True
     flash("Đã thêm " + p["name"] + " vào giỏ hàng.")
     return redirect(url_for("checkout") if request.form.get("intent") == "buy" else url_for("index",product=p["id"]))
@@ -322,9 +317,7 @@ def update_cart():
     i, delta = request.form.get("index",type=int), request.form.get("change",type=int)
     cart = cart_items()
     if i is not None and 0 <= i < len(cart) and delta in (-1,1):
-        cart[i]["quantity"] = min(10, cart[i]["quantity"] + delta)
-        if cart[i]["quantity"] <= 0:
-            cart.pop(i)
+        change_cart_quantity(cart, i, delta)
         session.modified = True
     return redirect(url_for("cart"))
 
@@ -334,7 +327,7 @@ def remove_cart():
     i = request.form.get("index",type=int)
     cart = cart_items()
     if i is not None and 0 <= i < len(cart):
-        cart.pop(i)
+        remove_cart_item(cart, i)
         session.modified = True
     return redirect(url_for("cart"))
 
@@ -362,19 +355,14 @@ def checkout():
     subtotal = sum(x["price"] * x["quantity"] for x in cart)
     coupon_code = session.get("coupon")
     coupon = db().execute("SELECT * FROM coupons WHERE code=? AND active=1", (coupon_code,)).fetchone() if coupon_code else None
-    discount = 0
-    if coupon and subtotal >= coupon["min_total"]:
-        discount = min(subtotal, int(subtotal * coupon["value"] / 100) if coupon["kind"] == "percent" else coupon["value"])
+    discount = calculate_discount(subtotal, coupon)
     total = subtotal - discount
     if request.method == "POST":
         form = request.form
         errors = {}
         name, phone, address = form.get("fullName","").strip(), form.get("phone","").strip(), form.get("address","").strip()
         payment = form.get("paymentMethod","cod")
-        if len(name) < 2: errors["fullName"] = "Vui lòng nhập họ tên."
-        if not (phone.isdigit() and len(phone)==10): errors["phone"] = "Số điện thoại phải gồm đúng 10 số."
-        if len(address) < 8: errors["address"] = "Vui lòng nhập địa chỉ đầy đủ."
-        if payment not in {"cod","qr","momo"}: errors["paymentMethod"] = "Phương thức thanh toán không hợp lệ."
+        errors = validate_checkout(name, phone, address, payment)
         if errors:
             return render_template("checkout.html",errors=errors,form=form,discount=discount,subtotal=subtotal)
         code = "GT" + secrets.token_hex(4).upper()
@@ -415,11 +403,7 @@ def complete():
 @admin_required
 def admin():
     orders = db().execute("SELECT * FROM orders ORDER BY id DESC LIMIT 100").fetchall()
-    stats = {
-        "orders": db().execute("SELECT COUNT(*) n FROM orders").fetchone()["n"],
-        "sales": db().execute("SELECT COALESCE(SUM(total),0) n FROM orders WHERE status!='cancelled'").fetchone()["n"],
-        "customers": db().execute("SELECT COUNT(*) n FROM users WHERE role='customer'").fetchone()["n"],
-    }
+    stats = dashboard_stats(db())
     return render_template("admin.html",orders=orders,stats=stats)
 
 
