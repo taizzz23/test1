@@ -1,16 +1,22 @@
-# React + Vite
+# GigaTech Store - Python Flask
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Đã chuyển ứng dụng từ React/Vite sang Python Flask. Không cần Node.js, npm, React hoặc JavaScript để chạy website.
 
-Currently, two official plugins are available:
+## Chạy trên Windows
+1. Cài Python 3.10 trở lên.
+2. Mở PowerShell tại thư mục dự án.
+3. Chạy: `py -m venv .venv`
+4. Kích hoạt: `.venv\\Scripts\\Activate.ps1`
+5. Cài thư viện: `pip install -r requirements.txt`
+6. Chạy: `python app.py`
+7. Mở http://127.0.0.1:5000
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Chức năng
+- Danh mục 10 điện thoại, lọc theo thương hiệu.
+- Xem chi tiết, thông số, điểm nổi bật.
+- Chọn màu/dung lượng và tính giá theo dung lượng.
+- Giỏ hàng, tăng giảm số lượng, xóa sản phẩm.
+- Đặt hàng, xác thực dữ liệu, hóa đơn.
+- QR/MoMo chỉ là mô phỏng, chưa kết nối ngân hàng.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Giỏ hàng được lưu bằng session. Dữ liệu đơn hàng demo chưa lưu database. Trước khi triển khai thật, hãy cấu hình SECRET_KEY, database, CSRF protection và cổng thanh toán.
